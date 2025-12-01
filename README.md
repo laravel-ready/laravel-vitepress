@@ -41,6 +41,7 @@ php artisan vitepress:install
 ```
 
 This will publish:
+
 - Configuration file to `config/vitepress.php`
 - Pre-built documentation assets to `storage/app/vitepress/docs` (protected by default)
 
@@ -240,6 +241,9 @@ php artisan vitepress:publish --views
 
 # Publish everything
 php artisan vitepress:publish --all
+
+# Publish everything (force overwrite, useful when package needs updating etc.)
+php artisan vitepress:publish --all --force
 ```
 
 ## Artisan Commands
@@ -322,16 +326,3 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
-
-## Security Vulnerabilities
-
-If you discover any security related issues, please email security@laravelready.com instead of using the issue tracker.
-
-## Credits
-
-- [Laravel Ready](https://github.com/laravel-ready)
-- [All Contributors](../../contributors)
-
-## License
-
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.

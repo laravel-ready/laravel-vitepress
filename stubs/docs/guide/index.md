@@ -22,6 +22,6 @@ Before you begin, make sure you have:
 
 ## Next Steps
 
-- [Installation](./installation) - Detailed installation instructions
-- [Configuration](./configuration) - Learn about configuration options
-- [Basic Usage](./basic-usage) - Start using the package
+- [Installation](/guide/installation) - Detailed installation instructions
+- [Configuration](/guide/configuration) - Learn about configuration options
+- [Basic Usage](/guide/basic-usage) - Start using the package

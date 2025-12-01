@@ -1,7 +1,7 @@
 /// <reference types="node" />
+import { defineConfig } from "vitepress";
 import { config as loadEnv } from "dotenv";
 import { resolve } from "path";
-import defineVersionedConfig from "vitepress-versioning-plugin";
 import userConfig from "./config.docs.mts";
 
 /**
@@ -21,33 +21,25 @@ const base = process.env.VITEPRESS_BASE ?? `/${routePrefix}/`;
 
 console.log(`[VitePress] Building with base URL: ${base}`);
 
-export default defineVersionedConfig(
-    {
-        // Merge user config
-        ...userConfig,
+export default defineConfig({
+    // Merge user config
+    ...userConfig,
 
-        // Package-managed settings (override user settings)
-        base: base,
+    // Package-managed settings (override user settings)
+    base: base,
 
-        // Package-managed head tags - these will be merged with user-defined head tags
-        // The favicon is always added by the package; user tags are appended
-        head: [
-            ["link", { rel: "icon", href: `${base}favicon.ico` }],
-            // Merge user-defined head tags
-            ...(userConfig.head ?? []),
-        ],
+    // Package-managed head tags - these will be merged with user-defined head tags
+    // The favicon is always added by the package; user tags are appended
+    head: [
+        ["link", { rel: "icon", href: `${base}favicon.ico` }],
+        // Merge user-defined head tags
+        ...(userConfig.head ?? []),
+    ],
 
-        // Custom language aliases for markdown syntax highlighting (see https://shiki.style/languages)
-        markdown: {
-            languageAlias: {
-                env: "dotenv",
-            },
-        },
-
-        // Versioning configuration
-        versioning: {
-            latestVersion: "1.0.0",
+    // Custom language aliases for markdown syntax highlighting (see https://shiki.style/languages)
+    markdown: {
+        languageAlias: {
+            env: "dotenv",
         },
     },
-    __dirname
-);
+});

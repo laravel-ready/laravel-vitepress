@@ -15,10 +15,17 @@ const userConfig: UserConfig = {
     themeConfig: {
         logo: "/logo.svg",
 
+        // Disable default version switcher in favor of custom nav component
+        // @ts-expect-error - versionSwitcher is provided by vitepress-versioning-plugin
+        versionSwitcher: false,
+
         nav: [
             { text: "Home", link: "/" },
             { text: "Guide", link: "/guide/" },
             { text: "API", link: "/api/" },
+            // Version switcher component (registered in theme/index.ts)
+            // @ts-expect-error - component nav items are supported by VitePress
+            { component: "VersionSwitcher" },
         ],
 
         sidebar: {

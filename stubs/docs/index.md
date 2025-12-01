@@ -8,7 +8,7 @@ hero:
   actions:
     - theme: brand
       text: Get Started
-      link: /guide/
+      link: ./guide/
     - theme: alt
       text: View on GitHub
       link: https://github.com/laravel-ready/laravel-vitepress
@@ -31,6 +31,6 @@ This is your documentation homepage. Edit this file at `resources/docs/index.md`
 
 ### Quick Links
 
-- [Getting Started](/guide/) - Learn how to use this documentation
-- [Installation](/guide/installation) - Installation instructions
-- [Configuration](/guide/configuration) - Configuration options
+- [Getting Started](./guide/) - Learn how to use this documentation
+- [Installation](./guide/installation) - Installation instructions
+- [Configuration](./guide/configuration) - Configuration options

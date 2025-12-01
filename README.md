@@ -22,7 +22,6 @@ Serve VitePress documentation in your Laravel application with full middleware s
 - 🔐 Protected storage by default (docs stored outside `public/` to enforce auth)
 - 💾 Cache control headers
 - 🌐 Multi-domain support
-- 📚 Documentation versioning support (via vitepress-versioning-plugin)
 
 ## 📋 Requirements
 
@@ -325,63 +324,6 @@ The package includes SPA fallback routing by default. Disable it for traditional
 'options' => [
     'spa_fallback' => false,
 ],
-```
-
-### Documentation Versioning
-
-The package includes built-in support for documentation versioning via [vitepress-versioning-plugin](https://vvp.imb11.dev/).
-
-#### Configuration
-
-Versioning is configured in `.vitepress/config.mts`:
-
-```typescript
-versioning: {
-    latestVersion: "v2",
-    versions: ["v1", "v2"],
-},
-```
-
-#### Folder Structure
-
-```txt
-resources/docs/
-├── index.md                    # Latest version (current)
-├── guide/                      # Latest version pages
-├── api/                        # Latest version pages
-└── versions/
-    ├── v1/                     # Archived v1 documentation
-    │   ├── index.md
-    │   ├── guide/
-    │   └── api/
-    └── v2/                     # Archived v2 documentation
-        ├── index.md
-        ├── guide/
-        └── api/
-```
-
-#### Sidebar Configuration
-
-Version-specific sidebars are stored in `.vitepress/sidebars/versioned/`:
-
-```txt
-.vitepress/sidebars/versioned/
-├── v1.json5
-└── v2.json5
-```
-
-#### Important: Use Relative Links
-
-All internal links in markdown files must be relative for versioning to work correctly:
-
-```markdown
-<!-- Good -->
-[Installation](./installation)
-[Guide](./guide/)
-
-<!-- Bad - will break in versioned pages -->
-[Installation](/guide/installation)
-[Guide](/guide/)
 ```
 
 ## 🧪 Testing

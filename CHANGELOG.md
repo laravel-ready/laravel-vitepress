@@ -5,21 +5,6 @@ All notable changes to `laravel-vitepress` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.0] - 2025-12-01
-
-### Added
-
-- Documentation versioning support via `vitepress-versioning-plugin`
-- VersionSwitcher component in navigation bar
-- Example versioned documentation (v1, v2)
-- Versioned sidebar configuration files (`.vitepress/sidebars/versioned/`)
-- Custom theme with VersionSwitcher registration
-
-### Changed
-
-- Updated `config.mts` to use `defineVersionedConfig` instead of `defineConfig`
-- Converted internal documentation links to relative paths for versioning compatibility
-
 ## [1.0.0] - 2025-12-01
 
 ### Added

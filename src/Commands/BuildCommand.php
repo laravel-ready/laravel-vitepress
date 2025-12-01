@@ -45,12 +45,18 @@ class BuildCommand extends Command
         }
 
         $packageManager = $this->detectPackageManager($sourcePath);
+
+        // Check for pnpm workspace configuration
+        if ($packageManager === 'pnpm') {
+            $this->checkPnpmWorkspace($sourcePath);
+        }
+
         $this->info("Building VitePress documentation using {$packageManager}...");
         $this->newLine();
 
         try {
             // Always install if node_modules doesn't exist or --install flag is set
-            $needsInstall = $this->option('install') || ! File::exists($sourcePath . '/node_modules');
+            $needsInstall = $this->option('install') || ! File::exists($sourcePath.'/node_modules');
 
             if ($needsInstall) {
                 $this->components->task("Installing dependencies ({$packageManager})", function () use ($sourcePath, $packageManager) {
@@ -185,6 +191,52 @@ class BuildCommand extends Command
             return public_path($path);
         }
 
-        return storage_path('app/' . $path);
+        return storage_path("app/{$path}");
+    }
+
+    /**
+     * Check pnpm workspace configuration and warn if docs path is not included.
+     */
+    protected function checkPnpmWorkspace(string $docsPath): void
+    {
+        $workspaceFile = base_path('pnpm-workspace.yaml');
+
+        if (! File::exists($workspaceFile)) {
+            return;
+        }
+
+        $content = File::get($workspaceFile);
+
+        // Get relative path from base_path to docs
+        $relativePath = str_replace(base_path().'/', '', $docsPath);
+
+        // Check if the docs path or a wildcard that includes it is in the workspace
+        $patterns = [
+            $relativePath,           // exact match: resources/docs
+            'resources/*',           // wildcard: resources/*
+            'resources/**',          // recursive wildcard: resources/**
+        ];
+
+        $isIncluded = false;
+        foreach ($patterns as $pattern) {
+            if (str_contains($content, $pattern)) {
+                $isIncluded = true;
+                break;
+            }
+        }
+
+        if (! $isIncluded) {
+            $this->newLine();
+            $this->components->warn('pnpm workspace detected but docs path may not be included.');
+            $this->newLine();
+            $this->line("  Add <comment>{$relativePath}</comment> to your <comment>pnpm-workspace.yaml</comment>:");
+            $this->newLine();
+            $this->line('  <fg=gray>packages:</>');
+            $this->line("    <fg=gray>- '{$relativePath}'</>");
+            $this->newLine();
+            $this->line('  Or run install directly in the docs directory:');
+            $this->line("  <comment>cd {$relativePath} && pnpm install</comment>");
+            $this->newLine();
+        }
     }
 }

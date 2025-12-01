@@ -19,7 +19,7 @@ class BuildCommand extends Command
     protected $signature = 'vitepress:build
                             {--source= : Source directory path}
                             {--output= : Output directory path}
-                            {--install : Install npm dependencies before building}';
+                            {--install : Install dependencies before building}';
 
     /**
      * The console command description.
@@ -44,22 +44,34 @@ class BuildCommand extends Command
             return self::FAILURE;
         }
 
-        $this->info('Building VitePress documentation...');
+        $packageManager = $this->detectPackageManager($sourcePath);
+        $this->info("Building VitePress documentation using {$packageManager}...");
         $this->newLine();
 
         try {
-            // Check if node_modules exists or --install flag is set
-            if ($this->option('install') || ! File::exists($sourcePath . '/node_modules')) {
-                $this->components->task('Installing npm dependencies', function () use ($sourcePath) {
-                    $this->runProcess(['npm', 'install'], $sourcePath);
+            // Always install if node_modules doesn't exist or --install flag is set
+            $needsInstall = $this->option('install') || ! File::exists($sourcePath . '/node_modules');
+
+            if ($needsInstall) {
+                $this->components->task("Installing dependencies ({$packageManager})", function () use ($sourcePath, $packageManager) {
+                    $this->runProcess([$packageManager, 'install'], $sourcePath);
 
                     return true;
                 });
+
+                // Verify node_modules was created
+                if (! File::exists($sourcePath . '/node_modules')) {
+                    $this->components->error('Failed to install dependencies. node_modules directory not found.');
+                    $this->newLine();
+                    $this->line("Try running manually: cd {$sourcePath} && {$packageManager} install");
+
+                    return self::FAILURE;
+                }
             }
 
             // Build VitePress
-            $this->components->task('Building VitePress', function () use ($sourcePath) {
-                $this->runProcess(['npm', 'run', 'docs:build'], $sourcePath);
+            $this->components->task('Building VitePress', function () use ($sourcePath, $packageManager) {
+                $this->runProcess([$packageManager, 'run', 'docs:build'], $sourcePath);
 
                 return true;
             });
@@ -96,6 +108,51 @@ class BuildCommand extends Command
     }
 
     /**
+     * Detect the package manager used in the project.
+     */
+    protected function detectPackageManager(string $docsPath): string
+    {
+        // Check Laravel project root first (user's preferred package manager)
+        $basePath = base_path();
+
+        if (File::exists("{$basePath}/pnpm-lock.yaml")) {
+            return 'pnpm';
+        }
+
+        if (File::exists("{$basePath}/yarn.lock")) {
+            return 'yarn';
+        }
+
+        if (File::exists("{$basePath}/bun.lockb") || File::exists("{$basePath}/bun.lock")) {
+            return 'bun';
+        }
+
+        if (File::exists("{$basePath}/package-lock.json")) {
+            return 'npm';
+        }
+
+        // Fall back to checking docs directory
+        if (File::exists("{$docsPath}/pnpm-lock.yaml")) {
+            return 'pnpm';
+        }
+
+        if (File::exists("{$docsPath}/yarn.lock")) {
+            return 'yarn';
+        }
+
+        if (File::exists("{$docsPath}/bun.lockb") || File::exists("{$docsPath}/bun.lock")) {
+            return 'bun';
+        }
+
+        if (File::exists("{$docsPath}/package-lock.json")) {
+            return 'npm';
+        }
+
+        // Default to npm
+        return 'npm';
+    }
+
+    /**
      * Run a process and stream output.
      *
      * @param  array<string>  $command
@@ -128,6 +185,6 @@ class BuildCommand extends Command
             return public_path($path);
         }
 
-        return storage_path('app/'.$path);
+        return storage_path('app/' . $path);
     }
 }

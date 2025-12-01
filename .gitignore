@@ -1,0 +1,30 @@
+/vendor/
+/node_modules/
+/.phpunit.cache/
+/.php-cs-fixer.cache
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Testing
+.phpunit.result.cache
+coverage/
+
+# Build artifacts
+/stubs/docs/.vitepress/dist/
+/stubs/docs/.vitepress/cache/
+
+# Composer
+composer.lock
+
+# npm
+package-lock.json

@@ -28,9 +28,18 @@ export default defineConfig({
     // Package-managed settings (override user settings)
     base: base,
 
+    // Package-managed head tags - these will be merged with user-defined head tags
+    // The favicon is always added by the package; user tags are appended
     head: [
         ["link", { rel: "icon", href: `${base}favicon.ico` }],
         // Merge user-defined head tags
         ...(userConfig.head ?? []),
     ],
+
+    // Custom language aliases for markdown syntax highlighting (see https://shiki.style/languages)
+    markdown: {
+        languageAlias: {
+            env: "dotenv",
+        },
+    },
 });

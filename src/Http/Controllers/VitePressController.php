@@ -85,7 +85,7 @@ class VitePressController extends Controller
      */
     protected function serve(string $path): Response|BinaryFileResponse
     {
-        $filePath = $this->docsPath.'/'.$path;
+        $filePath = $this->docsPath . '/' . $path;
 
         // Security: Prevent path traversal attacks
         $realPath = realpath($filePath);
@@ -122,7 +122,8 @@ class VitePressController extends Controller
         // SPA fallback: serve index.html for HTML routes
         if (config('vitepress.options.spa_fallback', true) && ! $this->isAssetPath($path)) {
             // Try to find a matching .html file first
-            $htmlPath = $this->docsPath.'/'.rtrim($path, '/').'.html';
+            $htmlPath = $this->docsPath . '/' . rtrim($path, '/') . '.html';
+
             if (File::exists($htmlPath)) {
                 return response()->file($htmlPath, [
                     'Content-Type' => 'text/html',
@@ -130,7 +131,7 @@ class VitePressController extends Controller
             }
 
             // Try index.html in the directory
-            $indexPath = $this->docsPath.'/'.rtrim($path, '/').'/index.html';
+            $indexPath = $this->docsPath . '/' . rtrim($path, '/') . '/index.html';
             if (File::exists($indexPath)) {
                 return response()->file($indexPath, [
                     'Content-Type' => 'text/html',
@@ -138,7 +139,7 @@ class VitePressController extends Controller
             }
 
             // Fall back to root index.html
-            $rootIndexPath = $this->docsPath.'/index.html';
+            $rootIndexPath = $this->docsPath . '/index.html';
             if (File::exists($rootIndexPath)) {
                 return response()->file($rootIndexPath, [
                     'Content-Type' => 'text/html',
@@ -220,11 +221,11 @@ class VitePressController extends Controller
         // If no extension and not an asset, check for .html or directory index
         if (! str_contains($path, '.') && ! $this->isAssetPath($path)) {
             // First check if .html file exists
-            if (File::exists($this->docsPath.'/'.$path.'.html')) {
+            if (File::exists($this->docsPath . '/' . $path . '.html')) {
                 $path .= '.html';
             }
             // Then check if directory with index.html exists
-            elseif (File::exists($this->docsPath.'/'.$path.'/index.html')) {
+            elseif (File::exists($this->docsPath . '/' . $path . '/index.html')) {
                 $path .= '/index.html';
             }
         }
@@ -238,8 +239,23 @@ class VitePressController extends Controller
     protected function isAssetPath(string $path): bool
     {
         $assetExtensions = [
-            'css', 'js', 'mjs', 'json', 'png', 'jpg', 'jpeg', 'gif', 'svg',
-            'ico', 'webp', 'woff', 'woff2', 'ttf', 'eot', 'otf', 'map',
+            'css',
+            'js',
+            'mjs',
+            'json',
+            'png',
+            'jpg',
+            'jpeg',
+            'gif',
+            'svg',
+            'ico',
+            'webp',
+            'woff',
+            'woff2',
+            'ttf',
+            'eot',
+            'otf',
+            'map',
         ];
         $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
@@ -305,6 +321,6 @@ class VitePressController extends Controller
         }
 
         // Default to storage (protected from direct access)
-        return storage_path('app/'.$path);
+        return storage_path('app/' . $path);
     }
 }

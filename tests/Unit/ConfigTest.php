@@ -26,7 +26,7 @@ it('has default assets configuration', function () {
 
 it('has default options configuration', function () {
     expect(config('vitepress.options.spa_fallback'))->toBeTrue();
-    expect(config('vitepress.options.custom_404'))->toBeNull();
+    expect(config('vitepress.options.custom_404'))->toBe('vitepress::errors.docs-404');
     expect(config('vitepress.options.cors_enabled'))->toBeFalse();
     expect(config('vitepress.options.headers'))->toBe([]);
 });

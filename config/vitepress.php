@@ -95,8 +95,13 @@ return [
         // Enable/disable index fallback for SPA routing
         'spa_fallback' => true,
 
-        // Custom 404 handling
-        'custom_404' => null,
+        /**
+         * Custom 404 view (set to null to use abort(404))
+         *
+         * Default: 'vitepress::errors.docs-404'
+         * Set to null to use abort(404) instead
+         */
+        'custom_404' => env('VITEPRESS_CUSTOM_404', 'vitepress::errors.docs-404'),
 
         // Enable CORS for assets
         'cors_enabled' => false,

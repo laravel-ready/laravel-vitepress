@@ -9,6 +9,8 @@
         "docs:preview": "vitepress preview"
     },
     "devDependencies": {
+        "@types/node": "^20.0.0",
+        "dotenv": "^16.0.0",
         "vitepress": "^1.0.0",
         "vue": "^3.3.0"
     }

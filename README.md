@@ -207,6 +207,23 @@ npm install
 npm run docs:build
 ```
 
+### Changing Route Prefix
+
+If you change `VITEPRESS_ROUTE_PREFIX` (e.g., from `/docs` to `/documentation`), you must rebuild VitePress with the matching base URL:
+
+```bash
+cd resources/docs
+VITEPRESS_BASE=/documentation/ npm run docs:build
+```
+
+Then copy the built files:
+
+```bash
+php artisan vitepress:build
+```
+
+The VitePress `base` config must match your Laravel route prefix, otherwise assets will 404.
+
 ### Publishing Other Resources
 
 ```bash

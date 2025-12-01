@@ -191,6 +191,17 @@ php artisan vitepress:publish --stubs
 
 This will publish VitePress source files to `resources/docs/`.
 
+### Configuration Files
+
+The VitePress config is split into two files:
+
+| File | Purpose | Editable? |
+|------|---------|-----------|
+| `.vitepress/config.mts` | Package-managed (base URL, dotenv) | No |
+| `.vitepress/config.docs.mts` | Your customizations (title, nav, sidebar) | Yes |
+
+Edit `config.docs.mts` to customize your documentation. Don't edit `config.mts` - it contains package logic that reads from your `.env` file.
+
 ### Building Documentation
 
 After making changes, rebuild:
@@ -199,30 +210,21 @@ After making changes, rebuild:
 php artisan vitepress:build
 ```
 
-Or use npm directly:
-
-```bash
-cd resources/docs
-npm install
-npm run docs:build
-```
-
 ### Changing Route Prefix
 
-If you change `VITEPRESS_ROUTE_PREFIX` (e.g., from `/docs` to `/documentation`), you must rebuild VitePress with the matching base URL:
+Just update your `.env` file:
 
-```bash
-cd resources/docs
-VITEPRESS_BASE=/documentation/ npm run docs:build
+```env
+VITEPRESS_ROUTE_PREFIX=documentation
 ```
 
-Then copy the built files:
+Then rebuild:
 
 ```bash
 php artisan vitepress:build
 ```
 
-The VitePress `base` config must match your Laravel route prefix, otherwise assets will 404.
+The base URL is automatically read from your `.env` file - no need to pass environment variables manually.
 
 ### Publishing Other Resources
 

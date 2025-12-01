@@ -1,12 +1,15 @@
 # Laravel VitePress
 
+[![ModelSupport](https://preview.dragon-code.pro/LaravelReady/laravel-vitepress.svg?brand=laravel)](https://github.com/laravel-ready/laravel-vitepress)
+
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/laravel-ready/laravel-vitepress.svg?style=flat-square)](https://packagist.org/packages/laravel-ready/laravel-vitepress)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/laravel-ready/laravel-vitepress/tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/laravel-ready/laravel-vitepress/actions?query=workflow%3Atests+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/laravel-ready/laravel-vitepress.svg?style=flat-square)](https://packagist.org/packages/laravel-ready/laravel-vitepress)
+[![License](https://img.shields.io/packagist/l/laravel-ready/laravel-vitepress.svg?style=flat-square)](https://packagist.org/packages/laravel-ready/laravel-vitepress)
 
 Serve VitePress documentation in your Laravel application with full middleware support, authentication, and role-based access control.
 
-## Features
+## ✨ Features
 
 - 🚀 Pre-built VitePress documentation (no build step required in production)
 - 🔐 Laravel authentication and authorization integration
@@ -20,13 +23,13 @@ Serve VitePress documentation in your Laravel application with full middleware s
 - 💾 Cache control headers
 - 🌐 Multi-domain support
 
-## Requirements
+## 📋 Requirements
 
 - PHP 8.1+
 - Laravel 10.x, 11.x, or 12.x
 - Node.js 20+ (for building documentation)
 
-## Installation
+## 📦 Installation
 
 Install the package via Composer:
 
@@ -47,7 +50,7 @@ This will publish:
 
 Visit `/docs` in your browser to see your documentation.
 
-## Configuration
+## ⚙️ Configuration
 
 ### Basic Setup
 
@@ -139,7 +142,7 @@ Gate::define('view-documentation', function ($user) {
 ],
 ```
 
-## Usage
+## 🚀 Usage
 
 ### Accessing Documentation
 
@@ -180,7 +183,7 @@ $prefix = VitePress::getConfig('route.prefix');
 @endif
 ```
 
-## Customization
+## 🎨 Customization
 
 ### Publishing VitePress Source
 
@@ -246,7 +249,7 @@ php artisan vitepress:publish --all
 php artisan vitepress:publish --all --force
 ```
 
-## Artisan Commands
+## 🛠️ Artisan Commands
 
 | Command | Description |
 |---------|-------------|
@@ -254,7 +257,7 @@ php artisan vitepress:publish --all --force
 | `vitepress:publish` | Publish specific resources |
 | `vitepress:build` | Build VitePress documentation |
 
-## Environment Variables
+## 🔧 Environment Variables
 
 ```env
 VITEPRESS_ENABLED=true
@@ -270,7 +273,7 @@ VITEPRESS_CACHE_ENABLED=true
 VITEPRESS_CACHE_MAX_AGE=3600
 ```
 
-## Advanced Usage
+## 🔬 Advanced Usage
 
 ### Custom Headers
 
@@ -313,16 +316,16 @@ The package includes SPA fallback routing by default. Disable it for traditional
 ],
 ```
 
-## Testing
+## 🧪 Testing
 
 ```bash
 composer test
 ```
 
-## Changelog
+## 📝 Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
-## Contributing
+## 🤝 Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.

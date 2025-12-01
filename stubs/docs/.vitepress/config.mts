@@ -46,7 +46,8 @@ export default defineVersionedConfig(
 
         // Versioning configuration
         versioning: {
-            latestVersion: "1.0.0",
+            latestVersion: "v2",
+            versions: ["v1", "v2"],
         },
     },
     __dirname

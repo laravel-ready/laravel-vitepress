@@ -97,6 +97,9 @@
         }
 
         .info-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
             margin-top: 32px;
             padding: 16px 20px;
             background-color: var(--bg-primary);
@@ -108,7 +111,7 @@
 
         .info-bar code {
             background-color: var(--border);
-            padding: 2px 6px;
+            padding: 10px 6px;
             border-radius: 4px;
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
             font-size: 13px;
@@ -126,7 +129,11 @@
             Back to Documentation
         </a>
         <div class="info-bar">
-            Did you build and publish assets? Run <code>php artisan vitepress:build</code>
+            <p>
+                Did you build and publish assets? Run:
+            </p>
+
+            <code>php artisan vitepress:build</code>
         </div>
     </div>
 </body>

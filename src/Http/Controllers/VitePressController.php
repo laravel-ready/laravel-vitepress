@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LaravelReady\VitePress\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -156,7 +157,7 @@ class VitePressController extends Controller
     /**
      * Handle unauthorized access.
      */
-    protected function handleUnauthorized(Request $request): Response|RedirectResponse
+    protected function handleUnauthorized(Request $request): Response|RedirectResponse|JsonResponse
     {
         if ($request->expectsJson()) {
             return response()->json([

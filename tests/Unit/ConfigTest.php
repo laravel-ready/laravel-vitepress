@@ -1,77 +1,65 @@
 <?php
 
-declare(strict_types=1);
+it('has default route configuration', function () {
+    expect(config('vitepress.route.enabled'))->toBeTrue();
+    expect(config('vitepress.route.prefix'))->toBe('docs');
+    expect(config('vitepress.route.name'))->toBe('vitepress');
+    expect(config('vitepress.route.domain'))->toBeNull();
+    expect(config('vitepress.route.middleware'))->toBe(['web']);
+});
 
-namespace LaravelReady\VitePress\Tests\Unit;
+it('has default auth configuration', function () {
+    expect(config('vitepress.auth.enabled'))->toBeFalse();
+    expect(config('vitepress.auth.middleware'))->toBe(['auth']);
+    expect(config('vitepress.auth.roles'))->toBe([]);
+    expect(config('vitepress.auth.permissions'))->toBe([]);
+    expect(config('vitepress.auth.gate'))->toBeNull();
+    expect(config('vitepress.auth.redirect_unauthorized_to'))->toBe('/login');
+});
 
-use LaravelReady\VitePress\Tests\TestCase;
+it('has default assets configuration', function () {
+    expect(config('vitepress.assets.storage'))->toBe('storage');
+    expect(config('vitepress.assets.path'))->toBe('vitepress/docs');
+    expect(config('vitepress.assets.cache.enabled'))->toBeTrue();
+    expect(config('vitepress.assets.cache.max_age'))->toBe(3600);
+});
 
-class ConfigTest extends TestCase
-{
-    /** @test */
-    public function it_has_default_route_configuration(): void
-    {
-        $this->assertTrue(config('vitepress.route.enabled'));
-        $this->assertEquals('docs', config('vitepress.route.prefix'));
-        $this->assertEquals('vitepress', config('vitepress.route.name'));
-        $this->assertNull(config('vitepress.route.domain'));
-        $this->assertEquals(['web'], config('vitepress.route.middleware'));
-    }
+it('has default options configuration', function () {
+    expect(config('vitepress.options.spa_fallback'))->toBeTrue();
+    expect(config('vitepress.options.custom_404'))->toBeNull();
+    expect(config('vitepress.options.cors_enabled'))->toBeFalse();
+    expect(config('vitepress.options.headers'))->toBe([]);
+});
 
-    /** @test */
-    public function it_has_default_auth_configuration(): void
-    {
-        $this->assertFalse(config('vitepress.auth.enabled'));
-        $this->assertEquals(['auth'], config('vitepress.auth.middleware'));
-        $this->assertEquals([], config('vitepress.auth.roles'));
-        $this->assertEquals([], config('vitepress.auth.permissions'));
-        $this->assertNull(config('vitepress.auth.gate'));
-        $this->assertEquals('/login', config('vitepress.auth.redirect_unauthorized_to'));
-    }
+it('has default build configuration', function () {
+    expect(config('vitepress.build.source_path'))->toBe(base_path('resources/docs'));
+    expect(config('vitepress.build.base_url'))->toBe('/docs/');
+});
 
-    /** @test */
-    public function it_has_default_assets_configuration(): void
-    {
-        $this->assertEquals('vendor/laravel-vitepress/docs', config('vitepress.assets.path'));
-        $this->assertEquals('public', config('vitepress.assets.disk'));
-        $this->assertTrue(config('vitepress.assets.cache.enabled'));
-        $this->assertEquals(3600, config('vitepress.assets.cache.max_age'));
-    }
+it('can override route configuration', function () {
+    config(['vitepress.route.prefix' => 'documentation']);
 
-    /** @test */
-    public function it_has_default_options_configuration(): void
-    {
-        $this->assertTrue(config('vitepress.options.spa_fallback'));
-        $this->assertNull(config('vitepress.options.custom_404'));
-        $this->assertFalse(config('vitepress.options.cors_enabled'));
-        $this->assertEquals([], config('vitepress.options.headers'));
-    }
+    expect(config('vitepress.route.prefix'))->toBe('documentation');
+});
 
-    /** @test */
-    public function it_can_override_configuration(): void
-    {
-        config(['vitepress.route.prefix' => 'documentation']);
+it('can override auth configuration', function () {
+    config(['vitepress.auth.enabled' => true]);
+    config(['vitepress.auth.roles' => ['admin', 'developer']]);
 
-        $this->assertEquals('documentation', config('vitepress.route.prefix'));
-    }
+    expect(config('vitepress.auth.enabled'))->toBeTrue();
+    expect(config('vitepress.auth.roles'))->toBe(['admin', 'developer']);
+});
 
-    /** @test */
-    public function it_can_override_auth_configuration(): void
-    {
-        config(['vitepress.auth.enabled' => true]);
-        config(['vitepress.auth.roles' => ['admin', 'developer']]);
+it('can override cache configuration', function () {
+    config(['vitepress.assets.cache.enabled' => false]);
+    config(['vitepress.assets.cache.max_age' => 7200]);
 
-        $this->assertTrue(config('vitepress.auth.enabled'));
-        $this->assertEquals(['admin', 'developer'], config('vitepress.auth.roles'));
-    }
+    expect(config('vitepress.assets.cache.enabled'))->toBeFalse();
+    expect(config('vitepress.assets.cache.max_age'))->toBe(7200);
+});
 
-    /** @test */
-    public function it_can_override_cache_configuration(): void
-    {
-        config(['vitepress.assets.cache.enabled' => false]);
-        config(['vitepress.assets.cache.max_age' => 7200]);
+it('can override storage configuration', function () {
+    config(['vitepress.assets.storage' => 'public']);
 
-        $this->assertFalse(config('vitepress.assets.cache.enabled'));
-        $this->assertEquals(7200, config('vitepress.assets.cache.max_age'));
-    }
-}
+    expect(config('vitepress.assets.storage'))->toBe('public');
+});

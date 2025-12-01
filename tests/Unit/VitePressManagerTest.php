@@ -1,92 +1,76 @@
 <?php
 
-declare(strict_types=1);
-
-namespace LaravelReady\VitePress\Tests\Unit;
-
 use Illuminate\Support\Facades\Config;
 use LaravelReady\VitePress\Facades\VitePress;
-use LaravelReady\VitePress\Tests\TestCase;
 
-class VitePressManagerTest extends TestCase
-{
-    /** @test */
-    public function it_can_check_if_enabled(): void
-    {
-        Config::set('vitepress.route.enabled', true);
-        $this->assertTrue(VitePress::isEnabled());
+it('can check if enabled', function () {
+    Config::set('vitepress.route.enabled', true);
+    expect(VitePress::isEnabled())->toBeTrue();
 
-        Config::set('vitepress.route.enabled', false);
-        $this->assertFalse(VitePress::isEnabled());
-    }
+    Config::set('vitepress.route.enabled', false);
+    expect(VitePress::isEnabled())->toBeFalse();
+});
 
-    /** @test */
-    public function it_can_get_docs_path(): void
-    {
-        $path = VitePress::getDocsPath();
+it('can get docs path', function () {
+    $path = VitePress::getDocsPath();
 
-        $this->assertStringContainsString('vendor/laravel-vitepress/docs', $path);
-    }
+    expect($path)->toContain('vitepress/docs');
+});
 
-    /** @test */
-    public function it_can_get_route_path(): void
-    {
-        $this->assertEquals('docs', VitePress::getRoutePath());
+it('can get route path', function () {
+    expect(VitePress::getRoutePath())->toBe('docs');
 
-        Config::set('vitepress.route.prefix', 'documentation');
-        $this->assertEquals('documentation', VitePress::getRoutePath());
-    }
+    Config::set('vitepress.route.prefix', 'documentation');
+    expect(VitePress::getRoutePath())->toBe('documentation');
+});
 
-    /** @test */
-    public function it_can_get_route_url(): void
-    {
-        $url = VitePress::getRouteUrl();
+it('can get route url', function () {
+    $url = VitePress::getRouteUrl();
 
-        $this->assertStringContainsString('docs', $url);
-    }
+    expect($url)->toContain('docs');
+});
 
-    /** @test */
-    public function it_can_get_config(): void
-    {
-        $config = VitePress::getConfig();
+it('can get config', function () {
+    $config = VitePress::getConfig();
 
-        $this->assertIsArray($config);
-        $this->assertArrayHasKey('route', $config);
-        $this->assertArrayHasKey('auth', $config);
-        $this->assertArrayHasKey('assets', $config);
-    }
+    expect($config)->toBeArray();
+    expect($config)->toHaveKey('route');
+    expect($config)->toHaveKey('auth');
+    expect($config)->toHaveKey('assets');
+    expect($config)->toHaveKey('build');
+    expect($config)->toHaveKey('options');
+});
 
-    /** @test */
-    public function it_can_get_specific_config_value(): void
-    {
-        $prefix = VitePress::getConfig('route.prefix');
+it('can get specific config value', function () {
+    $prefix = VitePress::getConfig('route.prefix');
 
-        $this->assertEquals('docs', $prefix);
-    }
+    expect($prefix)->toBe('docs');
+});
 
-    /** @test */
-    public function it_can_check_if_auth_is_enabled(): void
-    {
-        Config::set('vitepress.auth.enabled', false);
-        $this->assertFalse(VitePress::isAuthEnabled());
+it('can check if auth is enabled', function () {
+    Config::set('vitepress.auth.enabled', false);
+    expect(VitePress::isAuthEnabled())->toBeFalse();
 
-        Config::set('vitepress.auth.enabled', true);
-        $this->assertTrue(VitePress::isAuthEnabled());
-    }
+    Config::set('vitepress.auth.enabled', true);
+    expect(VitePress::isAuthEnabled())->toBeTrue();
+});
 
-    /** @test */
-    public function it_returns_true_for_can_access_when_auth_is_disabled(): void
-    {
-        Config::set('vitepress.auth.enabled', false);
+it('returns true for can access when auth is disabled', function () {
+    Config::set('vitepress.auth.enabled', false);
 
-        $this->assertTrue(VitePress::canAccess());
-    }
+    expect(VitePress::canAccess())->toBeTrue();
+});
 
-    /** @test */
-    public function it_returns_false_for_can_access_when_not_authenticated(): void
-    {
-        Config::set('vitepress.auth.enabled', true);
+it('returns false for can access when not authenticated', function () {
+    Config::set('vitepress.auth.enabled', true);
 
-        $this->assertFalse(VitePress::canAccess());
-    }
-}
+    expect(VitePress::canAccess())->toBeFalse();
+});
+
+it('can get storage type', function () {
+    Config::set('vitepress.assets.storage', 'storage');
+    expect(VitePress::getConfig('assets.storage'))->toBe('storage');
+
+    Config::set('vitepress.assets.storage', 'public');
+    expect(VitePress::getConfig('assets.storage'))->toBe('public');
+});

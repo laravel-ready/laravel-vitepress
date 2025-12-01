@@ -1,135 +1,112 @@
 <?php
 
-declare(strict_types=1);
-
-namespace LaravelReady\VitePress\Tests\Feature;
-
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Gate;
-use LaravelReady\VitePress\Tests\TestCase;
 
-class VitePressAuthTest extends TestCase
-{
-    /** @test */
-    public function it_allows_access_when_auth_is_disabled(): void
-    {
-        Config::set('vitepress.auth.enabled', false);
+it('allows access when auth is disabled', function () {
+    Config::set('vitepress.auth.enabled', false);
 
-        $response = $this->get('/docs');
+    $response = $this->get('/docs');
 
-        $response->assertStatus(200);
-    }
+    $response->assertStatus(200);
+});
 
-    /** @test */
-    public function it_redirects_unauthenticated_users_when_auth_is_enabled(): void
-    {
-        Config::set('vitepress.auth.enabled', true);
-        Config::set('vitepress.auth.redirect_unauthorized_to', '/login');
+it('redirects unauthenticated users when auth is enabled', function () {
+    Config::set('vitepress.auth.enabled', true);
+    Config::set('vitepress.auth.redirect_unauthorized_to', '/login');
 
-        $response = $this->get('/docs');
+    $response = $this->get('/docs');
 
-        $response->assertRedirect('/login');
-    }
+    $response->assertRedirect('/login');
+});
 
-    /** @test */
-    public function it_allows_authenticated_users_to_access_docs(): void
-    {
-        Config::set('vitepress.auth.enabled', true);
-        Config::set('vitepress.auth.roles', []);
-        Config::set('vitepress.auth.permissions', []);
+it('allows authenticated users to access docs', function () {
+    Config::set('vitepress.auth.enabled', true);
+    Config::set('vitepress.auth.roles', []);
+    Config::set('vitepress.auth.permissions', []);
 
-        $user = $this->createMockUser();
+    $user = createMockUser();
 
-        $response = $this->actingAs($user)->get('/docs');
+    $response = $this->actingAs($user)->get('/docs');
 
-        $response->assertStatus(200);
-    }
+    $response->assertStatus(200);
+});
 
-    /** @test */
-    public function it_checks_user_roles_when_configured(): void
-    {
-        Config::set('vitepress.auth.enabled', true);
-        Config::set('vitepress.auth.roles', ['admin', 'developer']);
-        Config::set('vitepress.auth.permissions', []);
+it('checks user roles when configured', function () {
+    Config::set('vitepress.auth.enabled', true);
+    Config::set('vitepress.auth.roles', ['admin', 'developer']);
+    Config::set('vitepress.auth.permissions', []);
 
-        // User with matching role
-        $adminUser = $this->createMockUser(['roles' => ['admin']]);
-        $response = $this->actingAs($adminUser)->get('/docs');
-        $response->assertStatus(200);
-    }
+    $adminUser = createMockUser(['roles' => ['admin']]);
 
-    /** @test */
-    public function it_denies_users_without_required_roles(): void
-    {
-        Config::set('vitepress.auth.enabled', true);
-        Config::set('vitepress.auth.roles', ['admin']);
-        Config::set('vitepress.auth.permissions', []);
-        Config::set('vitepress.auth.redirect_unauthorized_to', '/login');
+    $response = $this->actingAs($adminUser)->get('/docs');
 
-        // User without matching role
-        $regularUser = $this->createMockUser(['roles' => ['user']]);
-        $response = $this->actingAs($regularUser)->get('/docs');
-        $response->assertRedirect('/login');
-    }
+    $response->assertStatus(200);
+});
 
-    /** @test */
-    public function it_checks_user_permissions_when_configured(): void
-    {
-        Config::set('vitepress.auth.enabled', true);
-        Config::set('vitepress.auth.roles', []);
-        Config::set('vitepress.auth.permissions', ['view-docs']);
+it('denies users without required roles', function () {
+    Config::set('vitepress.auth.enabled', true);
+    Config::set('vitepress.auth.roles', ['admin']);
+    Config::set('vitepress.auth.permissions', []);
+    Config::set('vitepress.auth.redirect_unauthorized_to', '/login');
 
-        // User with matching permission
-        $user = $this->createMockUser(['permissions' => ['view-docs']]);
-        $response = $this->actingAs($user)->get('/docs');
-        $response->assertStatus(200);
-    }
+    $regularUser = createMockUser(['roles' => ['user']]);
 
-    /** @test */
-    public function it_uses_custom_gate_when_configured(): void
-    {
-        Config::set('vitepress.auth.enabled', true);
-        Config::set('vitepress.auth.gate', 'view-documentation');
-        Config::set('vitepress.auth.roles', []);
-        Config::set('vitepress.auth.permissions', []);
+    $response = $this->actingAs($regularUser)->get('/docs');
 
-        Gate::define('view-documentation', function ($user) {
-            return true;
-        });
+    $response->assertRedirect('/login');
+});
 
-        $user = $this->createMockUser();
-        $response = $this->actingAs($user)->get('/docs');
-        $response->assertStatus(200);
-    }
+it('checks user permissions when configured', function () {
+    Config::set('vitepress.auth.enabled', true);
+    Config::set('vitepress.auth.roles', []);
+    Config::set('vitepress.auth.permissions', ['view-docs']);
 
-    /** @test */
-    public function it_denies_access_when_gate_returns_false(): void
-    {
-        Config::set('vitepress.auth.enabled', true);
-        Config::set('vitepress.auth.gate', 'view-documentation');
-        Config::set('vitepress.auth.roles', []);
-        Config::set('vitepress.auth.permissions', []);
-        Config::set('vitepress.auth.redirect_unauthorized_to', '/login');
+    $user = createMockUser(['permissions' => ['view-docs']]);
 
-        Gate::define('view-documentation', function ($user) {
-            return false;
-        });
+    $response = $this->actingAs($user)->get('/docs');
 
-        $user = $this->createMockUser();
-        $response = $this->actingAs($user)->get('/docs');
-        $response->assertRedirect('/login');
-    }
+    $response->assertStatus(200);
+});
 
-    /** @test */
-    public function it_returns_json_for_api_requests_when_unauthorized(): void
-    {
-        Config::set('vitepress.auth.enabled', true);
+it('uses custom gate when configured', function () {
+    Config::set('vitepress.auth.enabled', true);
+    Config::set('vitepress.auth.gate', 'view-documentation');
+    Config::set('vitepress.auth.roles', []);
+    Config::set('vitepress.auth.permissions', []);
 
-        $response = $this->getJson('/docs');
+    Gate::define('view-documentation', fn ($user) => true);
 
-        $response->assertStatus(403);
-        $response->assertJson([
-            'message' => 'Unauthorized access to documentation.',
-        ]);
-    }
-}
+    $user = createMockUser();
+
+    $response = $this->actingAs($user)->get('/docs');
+
+    $response->assertStatus(200);
+});
+
+it('denies access when gate returns false', function () {
+    Config::set('vitepress.auth.enabled', true);
+    Config::set('vitepress.auth.gate', 'view-documentation');
+    Config::set('vitepress.auth.roles', []);
+    Config::set('vitepress.auth.permissions', []);
+    Config::set('vitepress.auth.redirect_unauthorized_to', '/login');
+
+    Gate::define('view-documentation', fn ($user) => false);
+
+    $user = createMockUser();
+
+    $response = $this->actingAs($user)->get('/docs');
+
+    $response->assertRedirect('/login');
+});
+
+it('returns json for api requests when unauthorized', function () {
+    Config::set('vitepress.auth.enabled', true);
+
+    $response = $this->getJson('/docs');
+
+    $response->assertStatus(403);
+    $response->assertJson([
+        'message' => 'Unauthorized access to documentation.',
+    ]);
+});

@@ -1,0 +1,19 @@
+parameters:
+    paths:
+        - src
+
+    level: 5
+
+    ignoreErrors:
+        # Spatie Laravel Permission methods (optional package)
+        -
+            identifier: method.notFound
+            message: '#hasAnyRole#'
+            reportUnmatched: false
+        -
+            identifier: method.notFound
+            message: '#hasAnyPermission#'
+            reportUnmatched: false
+
+    excludePaths:
+        - vendor

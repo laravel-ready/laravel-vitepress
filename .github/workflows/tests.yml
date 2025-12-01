@@ -8,6 +8,35 @@ on:
   pull_request:
 
 jobs:
+  static-analysis:
+    runs-on: ubuntu-latest
+    name: Static Analysis
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: dom, curl, libxml, mbstring, fileinfo
+          coverage: none
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: vendor-${{ runner.os }}-php-8.3-static-${{ hashFiles('composer.json') }}
+          restore-keys: |
+            vendor-${{ runner.os }}-php-8.3-static-
+
+      - name: Install dependencies
+        run: composer update --prefer-stable --prefer-dist --no-interaction
+
+      - name: Run PHPStan
+        run: composer analyse
+
   tests:
     runs-on: ubuntu-latest
 

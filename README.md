@@ -29,6 +29,16 @@ Serve VitePress documentation in your Laravel application with full middleware s
 - Laravel 10.x, 11.x, or 12.x
 - Node.js 20+ (for building documentation)
 
+## 📊 Support Matrix
+
+| PHP | Laravel 10 | Laravel 11 | Laravel 12 |
+|-----|:----------:|:----------:|:----------:|
+| 8.1 | ✅ | ❌ | ❌ |
+| 8.2 | ✅ | ✅ | ❌ |
+| 8.3 | ✅ | ✅ | ✅ |
+| 8.4 | ✅ | ✅ | ✅ |
+| 8.5 | ❌ | ❌ | ✅ |
+
 ## 📦 Installation
 
 Install the package via Composer:
@@ -148,7 +158,7 @@ Gate::define('view-documentation', function ($user) {
 
 After installation, your documentation is available at:
 
-```
+```txt
 https://your-app.com/docs
 ```
 

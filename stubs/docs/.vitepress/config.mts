@@ -12,7 +12,6 @@ import userConfig from "./config.docs.mts";
  */
 
 // Load environment variables from Laravel's .env file
-loadEnv({ path: resolve(__dirname, "../../.env") });
 loadEnv({ path: resolve(__dirname, "../../../.env") });
 
 // Base URL from VITEPRESS_BASE or VITEPRESS_ROUTE_PREFIX env variable

@@ -6,7 +6,7 @@ import type { UserConfig } from "vitepress";
  * Customize this file to change your documentation's appearance and structure.
  * Do NOT edit config.mts - it contains package-managed settings.
  */
-const userConfig: UserConfig = {
+const docsConfig: UserConfig = {
     // Site metadata
     title: "My Documentation",
     description: "Documentation powered by VitePress and Laravel",
@@ -35,7 +35,10 @@ const userConfig: UserConfig = {
                     text: "Usage",
                     items: [
                         { text: "Basic Usage", link: "/guide/basic-usage" },
-                        { text: "Advanced Usage", link: "/guide/advanced-usage" },
+                        {
+                            text: "Advanced Usage",
+                            link: "/guide/advanced-usage",
+                        },
                     ],
                 },
             ],
@@ -50,9 +53,7 @@ const userConfig: UserConfig = {
             ],
         },
 
-        socialLinks: [
-            { icon: "github", link: "https://github.com/your-repo" },
-        ],
+        socialLinks: [{ icon: "github", link: "https://github.com/your-repo" }],
 
         footer: {
             message: "Released under the MIT License.",
@@ -64,10 +65,11 @@ const userConfig: UserConfig = {
         },
 
         editLink: {
-            pattern: "https://github.com/your-repo/edit/main/resources/docs/:path",
+            pattern:
+                "https://github.com/your-repo/edit/main/resources/docs/:path",
             text: "Edit this page on GitHub",
         },
     },
 };
 
-export default userConfig;
+export default docsConfig;

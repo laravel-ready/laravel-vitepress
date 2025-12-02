@@ -2,7 +2,7 @@
 import { defineConfig } from "vitepress";
 import { config as loadEnv } from "dotenv";
 import { resolve } from "path";
-import userConfig from "./config.docs.mts";
+import docsConfig from "./config.docs.mts";
 
 /**
  * Package-managed VitePress configuration.
@@ -22,7 +22,7 @@ console.log(`[VitePress] Building with base URL: ${base}`);
 
 export default defineConfig({
     // Merge user config
-    ...userConfig,
+    ...docsConfig,
 
     // Package-managed settings (override user settings)
     base: base,
@@ -32,7 +32,7 @@ export default defineConfig({
     head: [
         ["link", { rel: "icon", href: `${base}favicon.ico` }],
         // Merge user-defined head tags
-        ...(userConfig.head ?? []),
+        ...(docsConfig.head ?? []),
     ],
 
     // Custom language aliases for markdown syntax highlighting (see https://shiki.style/languages)

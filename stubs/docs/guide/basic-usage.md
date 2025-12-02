@@ -4,7 +4,7 @@
 
 After installation, your documentation is available at:
 
-```
+```txt
 https://your-app.test/docs
 ```
 

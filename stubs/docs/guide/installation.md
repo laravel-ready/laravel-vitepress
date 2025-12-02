@@ -21,6 +21,7 @@ php artisan vitepress:install
 ```
 
 This will:
+
 - Publish the configuration file to `config/vitepress.php`
 - Publish the pre-built documentation assets
 
@@ -28,7 +29,7 @@ This will:
 
 Visit your application at `/docs` to see the documentation.
 
-```
+```txt
 https://your-app.test/docs
 ```
 

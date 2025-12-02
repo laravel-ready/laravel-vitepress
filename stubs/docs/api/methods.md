@@ -15,6 +15,7 @@ public function isEnabled(): bool
 **Returns:** `bool` - True if enabled, false otherwise.
 
 **Example:**
+
 ```php
 use LaravelReady\VitePress\Facades\VitePress;
 
@@ -36,6 +37,7 @@ public function getDocsPath(): string
 **Returns:** `string` - The absolute path.
 
 **Example:**
+
 ```php
 $path = VitePress::getDocsPath();
 // /var/www/html/public/vendor/laravel-vitepress/docs
@@ -54,6 +56,7 @@ public function getRoutePath(): string
 **Returns:** `string` - The route prefix.
 
 **Example:**
+
 ```php
 $prefix = VitePress::getRoutePath();
 // "docs"
@@ -72,6 +75,7 @@ public function getRouteUrl(): string
 **Returns:** `string` - The full URL.
 
 **Example:**
+
 ```php
 $url = VitePress::getRouteUrl();
 // "https://example.com/docs"
@@ -88,11 +92,13 @@ public function getConfig(?string $key = null): mixed
 ```
 
 **Parameters:**
+
 - `$key` (optional) - Dot-notation config key
 
 **Returns:** `mixed` - The configuration value or array.
 
 **Example:**
+
 ```php
 // Get all configuration
 $config = VitePress::getConfig();
@@ -115,6 +121,7 @@ public function isAuthEnabled(): bool
 **Returns:** `bool` - True if authentication is enabled.
 
 **Example:**
+
 ```php
 if (VitePress::isAuthEnabled()) {
     // Show login prompt
@@ -134,6 +141,7 @@ public function canAccess(): bool
 **Returns:** `bool` - True if the user has access.
 
 **Example:**
+
 ```php
 @if (VitePress::canAccess())
     <a href="{{ VitePress::getRouteUrl() }}">View Docs</a>
@@ -179,6 +187,7 @@ public function assetsExist(): bool
 **Returns:** `bool` - True if assets exist.
 
 **Example:**
+
 ```php
 if (!VitePress::assetsExist()) {
     Artisan::call('vitepress:publish --assets');

@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace LaravelReady\VitePress\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class VitePressController extends Controller
@@ -49,14 +46,6 @@ class VitePressController extends Controller
             'xml' => 'application/xml',
             'webmanifest' => 'application/manifest+json',
         ];
-
-        $this->middleware(function ($request, $next) {
-            if (! $this->authorize()) {
-                return $this->handleUnauthorized($request);
-            }
-
-            return $next($request);
-        });
     }
 
     /**
@@ -153,61 +142,6 @@ class VitePressController extends Controller
         }
 
         abort(404, 'Documentation page not found');
-    }
-
-    /**
-     * Handle unauthorized access.
-     */
-    protected function handleUnauthorized(Request $request): Response|RedirectResponse|JsonResponse
-    {
-        if ($request->expectsJson()) {
-            return response()->json([
-                'message' => 'Unauthorized access to documentation.',
-            ], 403);
-        }
-
-        $redirect = config('vitepress.auth.redirect_unauthorized_to', '/login');
-
-        return redirect($redirect)->with('error', 'You do not have permission to access the documentation.');
-    }
-
-    /**
-     * Check if the user is authorized to access documentation.
-     */
-    protected function authorize(): bool
-    {
-        if (! config('vitepress.auth.enabled', false)) {
-            return true;
-        }
-
-        $user = auth()->user();
-
-        if (! $user) {
-            return false;
-        }
-
-        // Check custom gate
-        if ($gate = config('vitepress.auth.gate')) {
-            return Gate::allows($gate);
-        }
-
-        // Check roles
-        $roles = config('vitepress.auth.roles', []);
-        if (! empty($roles) && method_exists($user, 'hasAnyRole')) {
-            if (! $user->hasAnyRole($roles)) {
-                return false;
-            }
-        }
-
-        // Check permissions
-        $permissions = config('vitepress.auth.permissions', []);
-        if (! empty($permissions) && method_exists($user, 'hasAnyPermission')) {
-            if (! $user->hasAnyPermission($permissions)) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     /**

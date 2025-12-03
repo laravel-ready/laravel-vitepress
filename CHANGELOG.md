@@ -5,6 +5,27 @@ All notable changes to `laravel-vitepress` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2025-12-02
+
+### Added
+
+- Custom 404 page view with improved layout and code block styling
+- PHPStan static analysis workflow and dependencies
+- GitHub Actions workflow for automated testing
+- Documentation build verification to GitHub Actions workflow
+- PHP/Laravel support matrix documentation
+
+### Changed
+
+- Renamed `userConfig` to `docsConfig` for better semantic clarity
+- Improved markdown formatting consistency in documentation files
+- Updated Pest dependencies
+
+### Removed
+
+- Removed redundant `.env` file loading from VitePress config
+- Removed package.json in favor of PNPM workspace management
+
 ## [1.0.0] - 2025-12-01
 
 ### Added

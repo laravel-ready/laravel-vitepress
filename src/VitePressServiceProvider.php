@@ -7,6 +7,7 @@ namespace LaravelReady\VitePress;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use LaravelReady\VitePress\Commands\BuildCommand;
+use LaravelReady\VitePress\Http\Middleware\VitePressAuth;
 use LaravelReady\VitePress\Commands\InstallCommand;
 use LaravelReady\VitePress\Commands\PublishCommand;
 
@@ -32,10 +33,20 @@ class VitePressServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->registerMiddleware();
         $this->registerPublishing();
         $this->registerRoutes();
         $this->registerCommands();
         $this->registerViews();
+    }
+
+    /**
+     * Register the package's middleware.
+     */
+    protected function registerMiddleware(): void
+    {
+        $router = $this->app->make('router');
+        $router->aliasMiddleware('vitepress.auth', VitePressAuth::class);
     }
 
     /**
@@ -110,13 +121,12 @@ class VitePressServiceProvider extends ServiceProvider
             $config['domain'] = $domain;
         }
 
-        // Add authentication middleware if enabled
-        if (config('vitepress.auth.enabled', false)) {
-            $config['middleware'] = array_merge(
-                $config['middleware'],
-                config('vitepress.auth.middleware', [])
-            );
-        }
+        // Always add vitepress.auth middleware (it checks config internally)
+        // This allows config to be changed at runtime (useful for testing)
+        $config['middleware'] = [
+            ...$config['middleware'],
+            'vitepress.auth',
+        ];
 
         return $config;
     }

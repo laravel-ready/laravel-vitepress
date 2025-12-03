@@ -56,7 +56,7 @@ class BuildCommand extends Command
 
         try {
             // Always install if node_modules doesn't exist or --install flag is set
-            $needsInstall = $this->option('install') || ! File::exists($sourcePath.'/node_modules');
+            $needsInstall = $this->option('install') || ! File::exists($sourcePath . '/node_modules');
 
             if ($needsInstall) {
                 $this->components->task("Installing dependencies ({$packageManager})", function () use ($sourcePath, $packageManager) {
@@ -77,7 +77,7 @@ class BuildCommand extends Command
 
             // Build VitePress
             $this->components->task('Building VitePress', function () use ($sourcePath, $packageManager) {
-                $this->runProcess([$packageManager, 'run', 'docs:build'], $sourcePath);
+                $this->runProcess([$packageManager, 'run', 'build'], $sourcePath);
 
                 return true;
             });
@@ -208,7 +208,7 @@ class BuildCommand extends Command
         $content = File::get($workspaceFile);
 
         // Get relative path from base_path to docs
-        $relativePath = str_replace(base_path().'/', '', $docsPath);
+        $relativePath = str_replace(base_path() . '/', '', $docsPath);
 
         // Check if the docs path or a wildcard that includes it is in the workspace
         $patterns = [

@@ -132,7 +132,7 @@ jobs:
         with:
           node-version: '20'
       - run: npm ci
-      - run: npm run docs:build
+      - run: npm run build
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'chore: rebuild documentation'

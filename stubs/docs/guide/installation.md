@@ -56,5 +56,5 @@ Or use npm directly:
 ```bash
 cd resources/docs
 npm install
-npm run docs:build
+npm run build
 ```

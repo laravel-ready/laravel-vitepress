@@ -122,4 +122,4 @@ jobs:
 
       - name: Build docs
         working-directory: stubs/docs
-        run: pnpm docs:build
+        run: pnpm build

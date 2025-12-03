@@ -53,8 +53,8 @@ To build the VitePress documentation locally:
 ```bash
 cd stubs/docs
 npm install
-npm run docs:dev  # Development server
-npm run docs:build  # Production build
+npm run dev  # Development server
+npm run build  # Production build
 ```
 
 **Happy coding**!

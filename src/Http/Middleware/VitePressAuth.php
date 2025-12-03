@@ -20,7 +20,7 @@ class VitePressAuth
             return $next($request);
         }
 
-        $user = auth()->user();
+        $user = $request->user();
 
         if (! $user) {
             return $this->unauthorized($request);

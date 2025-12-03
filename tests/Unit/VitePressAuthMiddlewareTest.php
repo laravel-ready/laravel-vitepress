@@ -16,6 +16,14 @@ beforeEach(function () {
     Config::set('vitepress.auth.redirect_unauthorized_to', '/login');
 });
 
+function createRequestWithUser($user = null): Request
+{
+    $request = Request::create('/docs', 'GET');
+    $request->setUserResolver(fn () => $user);
+
+    return $request;
+}
+
 it('passes through when auth is disabled', function () {
     Config::set('vitepress.auth.enabled', false);
 
@@ -31,7 +39,7 @@ it('denies unauthenticated users when auth is enabled', function () {
     Config::set('vitepress.auth.enabled', true);
 
     $middleware = new VitePressAuth();
-    $request = Request::create('/docs', 'GET');
+    $request = createRequestWithUser(null);
 
     $response = $middleware->handle($request, fn () => new Response('OK'));
 
@@ -42,10 +50,8 @@ it('allows authenticated users when no roles or permissions configured', functio
     Config::set('vitepress.auth.enabled', true);
 
     $user = createMockUser();
-    $this->actingAs($user);
-
     $middleware = new VitePressAuth();
-    $request = Request::create('/docs', 'GET');
+    $request = createRequestWithUser($user);
 
     $response = $middleware->handle($request, fn () => new Response('OK'));
 
@@ -57,10 +63,8 @@ it('allows users with matching roles', function () {
     Config::set('vitepress.auth.roles', ['admin', 'developer']);
 
     $user = createMockUser(['roles' => ['admin']]);
-    $this->actingAs($user);
-
     $middleware = new VitePressAuth();
-    $request = Request::create('/docs', 'GET');
+    $request = createRequestWithUser($user);
 
     $response = $middleware->handle($request, fn () => new Response('OK'));
 
@@ -72,10 +76,8 @@ it('denies users without matching roles', function () {
     Config::set('vitepress.auth.roles', ['admin']);
 
     $user = createMockUser(['roles' => ['user']]);
-    $this->actingAs($user);
-
     $middleware = new VitePressAuth();
-    $request = Request::create('/docs', 'GET');
+    $request = createRequestWithUser($user);
 
     $response = $middleware->handle($request, fn () => new Response('OK'));
 
@@ -87,10 +89,8 @@ it('allows users with matching permissions', function () {
     Config::set('vitepress.auth.permissions', ['view-docs']);
 
     $user = createMockUser(['permissions' => ['view-docs']]);
-    $this->actingAs($user);
-
     $middleware = new VitePressAuth();
-    $request = Request::create('/docs', 'GET');
+    $request = createRequestWithUser($user);
 
     $response = $middleware->handle($request, fn () => new Response('OK'));
 
@@ -102,10 +102,8 @@ it('denies users without matching permissions', function () {
     Config::set('vitepress.auth.permissions', ['view-docs']);
 
     $user = createMockUser(['permissions' => ['other-permission']]);
-    $this->actingAs($user);
-
     $middleware = new VitePressAuth();
-    $request = Request::create('/docs', 'GET');
+    $request = createRequestWithUser($user);
 
     $response = $middleware->handle($request, fn () => new Response('OK'));
 
@@ -122,7 +120,7 @@ it('allows access when gate returns true', function () {
     $this->actingAs($user);
 
     $middleware = new VitePressAuth();
-    $request = Request::create('/docs', 'GET');
+    $request = createRequestWithUser($user);
 
     $response = $middleware->handle($request, fn () => new Response('OK'));
 
@@ -139,7 +137,7 @@ it('denies access when gate returns false', function () {
     $this->actingAs($user);
 
     $middleware = new VitePressAuth();
-    $request = Request::create('/docs', 'GET');
+    $request = createRequestWithUser($user);
 
     $response = $middleware->handle($request, fn () => new Response('OK'));
 
@@ -150,7 +148,7 @@ it('returns json response for api requests when unauthorized', function () {
     Config::set('vitepress.auth.enabled', true);
 
     $middleware = new VitePressAuth();
-    $request = Request::create('/docs', 'GET');
+    $request = createRequestWithUser(null);
     $request->headers->set('Accept', 'application/json');
 
     $response = $middleware->handle($request, fn () => new Response('OK'));
@@ -164,7 +162,7 @@ it('redirects to configured url when unauthorized', function () {
     Config::set('vitepress.auth.redirect_unauthorized_to', '/custom-login');
 
     $middleware = new VitePressAuth();
-    $request = Request::create('/docs', 'GET');
+    $request = createRequestWithUser(null);
 
     $response = $middleware->handle($request, fn () => new Response('OK'));
 
@@ -179,10 +177,8 @@ it('requires both roles and permissions when both configured', function () {
 
     // User has role but not permission
     $user = createMockUser(['roles' => ['admin'], 'permissions' => []]);
-    $this->actingAs($user);
-
     $middleware = new VitePressAuth();
-    $request = Request::create('/docs', 'GET');
+    $request = createRequestWithUser($user);
 
     $response = $middleware->handle($request, fn () => new Response('OK'));
 
@@ -195,10 +191,8 @@ it('allows when user has both required roles and permissions', function () {
     Config::set('vitepress.auth.permissions', ['view-docs']);
 
     $user = createMockUser(['roles' => ['admin'], 'permissions' => ['view-docs']]);
-    $this->actingAs($user);
-
     $middleware = new VitePressAuth();
-    $request = Request::create('/docs', 'GET');
+    $request = createRequestWithUser($user);
 
     $response = $middleware->handle($request, fn () => new Response('OK'));
 
@@ -247,10 +241,8 @@ it('skips role check when user does not have hasAnyRole method', function () {
         }
     };
 
-    $this->actingAs($user);
-
     $middleware = new VitePressAuth();
-    $request = Request::create('/docs', 'GET');
+    $request = createRequestWithUser($user);
 
     $response = $middleware->handle($request, fn () => new Response('OK'));
 

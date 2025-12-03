@@ -5,6 +5,23 @@ All notable changes to `laravel-vitepress` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.2] - 2025-12-03
+
+### Added
+
+- Registered `VitePressAuth` middleware with alias `vitepress.auth` in service provider
+- Comprehensive unit tests for `VitePressAuth` middleware (14 new tests)
+
+### Changed
+
+- Middleware is now always applied to routes (checks config internally for runtime flexibility)
+- Authorization logic consolidated in middleware, removed duplicate code from controller
+
+### Removed
+
+- Removed inline authorization closure from `VitePressController` constructor
+- Removed `authorize()` and `handleUnauthorized()` methods from controller
+
 ## [1.2.1] - 2025-12-02
 
 ### Added

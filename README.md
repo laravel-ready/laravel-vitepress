@@ -1,6 +1,6 @@
 # Laravel VitePress
 
-[![ModelSupport](https://preview.dragon-code.pro/LaravelReady/laravel-vitepress.svg?brand=laravel)](https://github.com/laravel-ready/laravel-vitepress)
+[![Laravel-VitePress](https://preview.dragon-code.pro/LaravelReady/laravel-vitepress.svg?brand=laravel)](https://github.com/laravel-ready/laravel-vitepress)
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/laravel-ready/laravel-vitepress.svg?style=flat-square)](https://packagist.org/packages/laravel-ready/laravel-vitepress)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/laravel-ready/laravel-vitepress/tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/laravel-ready/laravel-vitepress/actions?query=workflow%3Atests+branch%3Amain)
